@@ -1,80 +1,52 @@
-const	mongoose = require("mongoose"), 
-			express = require('express');
+// var Article = mongoose.model("Article", ArticleSchema);
 
-const	app = express();
+// module.exports = Article;
 
-// Create a Schema class with mongoose
+// Require Mongoose
+var mongoose = require('mongoose');
+
+// require the connection
+var db = require("../config/connection");
+
+
+// Create a Schema Class
 var Schema = mongoose.Schema;
 
-var ArticleSchema = new Schema ({
-	title: {
-		type: String,
-		trim: true,
-		unique: true,
-		required: "title is required"
-	},
-	link: {
-		type: String,
-		trim: true,
-		unique: true
-	},
-	summary: {
-		type: String,
-		trim: true
-	}, 
-	image: {
-        type: String,
-        trim: true
-    }
-  
+// Create article schema
+var ArticleSchema = new Schema({
+  // title is a required string
+  title: 
+  {
+    type: String,
+    required: true,
+    unique: true,
+    dropDups: true
+  },
+  // link is a required string
+  link: 
+  {
+    type: String,
+    required: true,
+    unique: true
+  },
+  summary: {
+	type: String,
+	trim: true
+  }, 
+  image: {
+	type: String,
+	trim: true
+  },
+  note: [{
+    // Store ObjectIds in the array
+    type: Schema.Types.ObjectId,
+    // The ObjectIds will refer to the ids in the Note model
+    ref: "Note"
+  }]
 });
 
-ArticleSchema.methods.retrieveAll = function(res) {
-	return this.model('Article').find({}).sort({date: -1}).exec(function(err, data) {
-		if(err) {
-			console.log(err);
-		} else {
-			console.log(data);
-			res.render('home.hbs', { articles: data});
-		}
-	});
-};
-
-
-// ArticleSchema.methods.retrieveOne = function(req, res) {
-// 	return this.model('Article')
-// 		.find({_id: req.query.articleID})
-// 		.exec(function(err, data) {
-// 		if(err) {
-// 			console.log(err);
-// 		} else {
-// 			console.log(data);
-// 			res.render('article.hbs', {article: data[0], showNotes: false});
-// 		}
-// 	});
-// };
-
-// ArticleSchema.methods.viewNotes = function(req, res, Note, article) {
-// 	return this.model('Article')
-// 	.find({_id: req.query.articleID})
-// 	.exec(function(err, data) {
-// 		console.log('viewNotes exec fired');
-// 		console.log(data);
-// 			Note.find({_id: {$in: data[0].notes}})
-// 			.sort({created: -1})
-// 			.exec(function(err, doc) {
-// 				if(err) {
-// 					console.log(err);
-// 				} else {
-// 					console.log('doc is ' + doc);
-// 					res.render('article.hbs', {article: data[0], notes: doc, showNotes: req.query.showNotes});
-// 				}
-// 			});
-// 	});
-// };
-
-
-
+// Create the Article model with the ArticleSchema
 var Article = mongoose.model("Article", ArticleSchema);
 
+// Export the model
 module.exports = Article;

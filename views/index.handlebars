@@ -1,0 +1,33 @@
+
+
+<div class="container">
+    {{#each articles}}
+    <div class="card" style="width: 70%; margin:20px;">
+        <img class="card-img-top" src={{image}} alt="Card image cap">
+        <div class="card-body">
+            <h5 class="card-title">{{title}}</h5>
+            <p class="card-text">{{summary}}</p>
+            <a href={{link}} class="btn btn-primary"  target="_blank">Full Article</a>
+        </div>
+    </div>
+	{{/each}}
+</div>
+
+<div id="noteModal" class="modal modal-fixed-footer">
+
+    <div class="modal-content">
+        <p>Notes</p>
+        <ul class="messages collection"></ul>
+    </div>
+    
+    <div class="modal-footer">
+        <form name="noteForm" id="noteForm">
+                    <input required placeholder="Enter a note here" type="text" name="noteText" id="noteText">
+            <button class="btn green left" type="submit" id="noteButton">
+                Post Note!
+            </button>
+            <a href="/" class="modal-action modal-close waves-effect waves-light btn-flat">Close</a>
+        </form>
+    </div>
+
+</div>
